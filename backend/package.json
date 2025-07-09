@@ -1,0 +1,18 @@
+{
+  "name": "discord-bot-dashboard-backend",
+  "version": "1.0.0",
+  "description": "Backend for the Discord bot dashboard",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "multer": "^1.4.5-lts.1",
+    "extract-zip": "^2.0.1",
+    "ws": "^8.12.0",
+    "cors": "^2.8.5",
+    "pidusage": "^3.0.0",
+    "archiver": "^5.3.1"
+  }
+}

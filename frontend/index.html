@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bot Host Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div class="min-h-screen bg-gray-900 text-gray-100 p-4 md:p-8">
+        <main class="container mx-auto">
+            <h1 class="text-4xl font-bold text-center mb-8 text-blue-400">Discord Bot Dashboard</h1>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Bot Status & Controls -->
+                <div class="bg-gray-800 rounded-lg shadow-lg p-6">
+                    <h2 class="text-2xl font-semibold mb-4 flex items-center text-blue-300">
+                        <i class="fas fa-robot mr-3"></i> Bot Status & Controls
+                    </h2>
+                    <div class="flex flex-col md:flex-row items-center justify-between bg-gray-700 p-4 rounded-md mb-6">
+                        <div class="flex items-center mb-4 md:mb-0" id="bot-status-indicator">
+                            <div class="w-4 h-4 rounded-full bg-red-500 mr-3 transition-colors duration-300"></div>
+                            <span class="text-lg font-medium" id="bot-status-text">Stopped</span>
+                        </div>
+                        <div class="flex space-x-4">
+                            <button id="start-btn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-md transition-colors duration-300">
+                                <i class="fas fa-play mr-2"></i> Start
+                            </button>
+                            <button id="stop-btn" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-md transition-colors duration-300">
+                                <i class="fas fa-stop mr-2"></i> Stop
+                            </button>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-gray-700 p-4 rounded-md shadow-inner">
+                            <h3 class="text-xl font-medium mb-3 text-gray-200">CPU Usage</h3>
+                            <div class="w-full bg-gray-600 rounded-full h-3">
+                                <div class="bg-blue-500 h-3 rounded-full" id="cpu-progress" style="width: 0%;"></div>
+                            </div>
+                            <p id="cpu-text" class="mt-2 text-gray-300">0%</p>
+                        </div>
+                        <div class="bg-gray-700 p-4 rounded-md shadow-inner">
+                            <h3 class="text-xl font-medium mb-3 text-gray-200">Memory Usage</h3>
+                            <div class="w-full bg-gray-600 rounded-full h-3">
+                                <div class="bg-purple-500 h-3 rounded-full" id="ram-progress" style="width: 0%;"></div>
+                            </div>
+                            <p id="ram-text" class="mt-2 text-gray-300">0 MB</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Deploy New Version -->
+                <div class="bg-gray-800 rounded-lg shadow-lg p-6">
+                    <h2 class="text-2xl font-semibold mb-4 flex items-center text-blue-300">
+                        <i class="fas fa-cloud-upload-alt mr-3"></i> Deploy New Version
+                    </h2>
+                    <div class="bg-gray-700 p-4 rounded-md">
+                        <form id="upload-form">
+                            <div class="mb-4">
+                                <label for="file-input" class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-md cursor-pointer transition-colors duration-300">
+                                    <i class="fas fa-file-upload mr-2"></i> Choose a .zip file to deploy
+                                </label>
+                                <input type="file" name="bot" id="file-input" accept=".zip" required class="hidden">
+                                <span id="file-name" class="ml-3 text-gray-300">No file selected</span>
+                            </div>
+                            <div class="w-full bg-gray-600 rounded-full h-3 hidden" id="upload-progress-container">
+                                <div class="bg-green-500 h-3 rounded-full" id="upload-progress" style="width: 0%;"></div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Environment Variables (.env) -->
+                <div class="bg-gray-800 rounded-lg shadow-lg p-6">
+                    <h2 class="text-2xl font-semibold mb-4 flex items-center text-blue-300">
+                        <i class="fas fa-cogs mr-3"></i> Environment Variables (.env)
+                    </h2>
+                    <div class="bg-gray-700 p-4 rounded-md">
+                        <div class="mb-4">
+                            <textarea id="env-editor" class="w-full h-64 p-3 bg-gray-900 border border-gray-600 rounded-md text-gray-100 font-mono focus:outline-none focus:border-blue-500" placeholder="KEY=VALUE"></textarea>
+                        </div>
+                        <button id="save-env-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition-colors duration-300">
+                            <i class="fas fa-save mr-2"></i> Save .env
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Create Backup -->
+                <div class="bg-gray-800 rounded-lg shadow-lg p-6">
+                    <h2 class="text-2xl font-semibold mb-4 flex items-center text-blue-300">
+                        <i class="fas fa-download mr-3"></i> Create Backup
+                    </h2>
+                    <div class="bg-gray-700 p-4 rounded-md">
+                        <p class="text-gray-300 mb-4">Create a .zip backup of the current bot's directory.</p>
+                        <button id="backup-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-md transition-colors duration-300">
+                            <i class="fas fa-file-archive mr-2"></i> Download Backup
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Console Logs -->
+                <div class="bg-gray-800 rounded-lg shadow-lg p-6 lg:col-span-2">
+                    <h2 class="text-2xl font-semibold mb-4 flex items-center text-blue-300">
+                        <i class="fas fa-clipboard-list mr-3"></i> Console Logs
+                    </h2>
+                    <div class="bg-gray-900 p-4 rounded-md h-96 overflow-y-auto border border-gray-700">
+                        <pre id="logs-output" class="text-gray-100 font-mono text-sm whitespace-pre-wrap"></pre>
+                    </div>
+                </div>
+
+                <!-- About This Host -->
+                <div class="bg-gray-800 rounded-lg shadow-lg p-6 lg:col-span-2">
+                    <h2 class="text-2xl font-semibold mb-4 flex items-center text-blue-300">
+                        <i class="fas fa-info-circle mr-3"></i> About This Host
+                    </h2>
+                    <div class="bg-gray-700 p-4 rounded-md">
+                        <p class="text-gray-300 mb-2">This dashboard is designed to help you manage your Discord bots efficiently.</p>
+                        <p class="text-gray-300 mb-2">Developed by Jeiel0rbit</p>
+                        <p class="text-gray-300">Github:<a href="https://github.com/Jeiel0rbit/Bot-Host-Dashboard" target="_blank" class="text-blue-400 hover:underline">https://github.com/Jeiel0rbit/Bot-Host-Dashboard</a>.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
